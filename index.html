@@ -1,46 +1,593 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>小满的个人主页</title>
+  <meta name="theme-color" content="#f5f7ef">
+  <meta name="description" content="小满的个人主页：我喜欢用照片、纸笔和音乐记录日常。">
+  <title>小满 · 日常记录</title>
   <style>
-    :root { color-scheme: light; font-family: "Microsoft YaHei", system-ui, sans-serif; }
-    * { box-sizing: border-box; }
-    body { margin: 0; background: #f3f7f4; color: #17392e; }
-    main { max-width: 56rem; padding: clamp(1.25rem, 5vw, 3rem); margin: auto; }
-    header { border-radius: 1.5rem; background: #17392e; color: #fff; padding: clamp(1.5rem, 6vw, 3.5rem); }
-    header p { margin: 0; }
-    .label { color: #c6e6d4; font-size: .95rem; }
-    h1 { margin: .5rem 0 .75rem; font-size: clamp(2.3rem, 7vw, 4.2rem); line-height: 1.15; }
-    p { font-size: 1.08rem; line-height: 1.65; }
-    h2 { margin: 2rem 0 1rem; font-size: 1.5rem; }
-    .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .9rem; }
-    article { background: #fff; border: 1px solid #d7e5db; border-radius: 1rem; padding: 1.2rem; }
-    h3 { margin: 0; font-size: 1.15rem; }
-    article p { margin: .45rem 0 0; color: #3a534a; }
-    footer { margin-top: 1.5rem; color: #465d54; font-size: .9rem; }
+    :root {
+      color-scheme: light;
+      --bg: #f5f7ef;
+      --paper: #fffef9;
+      --green: #496c52;
+      --green-dark: #304d38;
+      --green-soft: #e5ecdf;
+      --ink: #26342a;
+      --muted: #788276;
+      --line: #e5e9dd;
+      --accent: #d7e5cd;
+      --shadow: 0 18px 55px rgba(55, 75, 55, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        radial-gradient(ellipse at 10% 12%, rgba(218, 231, 207, 0.45), transparent 28rem),
+        var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      width: min(100% - 40px, 1040px);
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 82px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--green-dark);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 30px;
+      height: 30px;
+      place-items: center;
+      border: 1px solid #c9d7c2;
+      border-radius: 50%;
+      background: var(--paper);
+      color: var(--green);
+      font-size: 15px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+
+    .nav a:hover,
+    .nav a:focus-visible {
+      color: var(--green-dark);
+    }
+
+    .hero {
+      position: relative;
+      display: grid;
+      min-height: 480px;
+      grid-template-columns: 1.08fr 0.92fr;
+      align-items: center;
+      gap: 36px;
+      padding: 48px 0 62px;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 18px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 22px;
+      height: 1px;
+      background: #91aa88;
+      content: "";
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--green-dark);
+      font-size: clamp(42px, 6.5vw, 72px);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+    }
+
+    .intro {
+      max-width: 390px;
+      margin: 22px 0 0;
+      color: #647064;
+      font-size: clamp(16px, 2vw, 18px);
+      letter-spacing: 0.02em;
+    }
+
+    .hero-note {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 31px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+    }
+
+    .hero-note span:first-child {
+      display: grid;
+      width: 29px;
+      height: 29px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 14px;
+    }
+
+    .art {
+      position: relative;
+      display: grid;
+      min-height: 330px;
+      place-items: center;
+    }
+
+    .art::before,
+    .art::after {
+      position: absolute;
+      border: 1px solid rgba(112, 145, 105, 0.22);
+      border-radius: 50%;
+      content: "";
+    }
+
+    .art::before {
+      width: 310px;
+      height: 310px;
+    }
+
+    .art::after {
+      width: 250px;
+      height: 250px;
+      border-style: dashed;
+      opacity: 0.75;
+    }
+
+    .sun {
+      position: absolute;
+      top: 28px;
+      right: 15%;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #e6edcf;
+    }
+
+    .leaf {
+      position: absolute;
+      width: 47px;
+      height: 75px;
+      border: 1px solid #9db495;
+      border-radius: 100% 0 100% 0;
+      background: rgba(215, 229, 205, 0.58);
+      transform: rotate(38deg);
+    }
+
+    .leaf.one {
+      bottom: 45px;
+      left: 10%;
+    }
+
+    .leaf.two {
+      top: 44px;
+      left: 16%;
+      width: 32px;
+      height: 52px;
+      transform: rotate(-24deg);
+    }
+
+    .postcard {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      width: min(76%, 280px);
+      aspect-ratio: 0.9;
+      place-items: center;
+      overflow: hidden;
+      border: 10px solid rgba(255, 254, 249, 0.95);
+      border-radius: 5px;
+      background: #dce8d4;
+      box-shadow: var(--shadow);
+      transform: rotate(5deg);
+    }
+
+    .postcard svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .postcard-label {
+      position: absolute;
+      right: 14px;
+      bottom: 13px;
+      padding: 5px 9px;
+      border-radius: 2px;
+      background: rgba(255, 254, 249, 0.88);
+      color: var(--green);
+      font-size: 10px;
+      letter-spacing: 0.13em;
+    }
+
+    .section {
+      padding: 34px 0 78px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .section-kicker {
+      margin: 0 0 5px;
+      color: #8a9986;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+    }
+
+    h2 {
+      margin: 0;
+      color: var(--green-dark);
+      font-size: 27px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .section-hint {
+      margin: 0 0 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .interest-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .interest-card {
+      min-height: 190px;
+      padding: 23px 23px 20px;
+      border: 1px solid rgba(218, 225, 212, 0.85);
+      border-radius: 8px;
+      background: rgba(255, 254, 249, 0.84);
+      box-shadow: 0 8px 26px rgba(55, 75, 55, 0.035);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .interest-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+
+    .interest-icon {
+      display: grid;
+      width: 43px;
+      height: 43px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 20px;
+    }
+
+    .interest-card h3 {
+      margin: 17px 0 4px;
+      color: var(--green-dark);
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+
+    .interest-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .closing {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 0 0 62px;
+      padding: 25px 20px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      color: #71806d;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-align: center;
+    }
+
+    .closing-mark {
+      color: #96ac8c;
+      font-size: 17px;
+    }
+
+    footer {
+      padding: 0 0 25px;
+      color: #98a193;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-align: center;
+    }
+
     @media (max-width: 600px) {
-      .cards { grid-template-columns: 1fr; }
+      .page {
+        width: min(100% - 36px, 500px);
+      }
+
+      .topbar {
+        min-height: 68px;
+      }
+
+      .nav {
+        gap: 17px;
+        font-size: 12px;
+      }
+
+      .hero {
+        min-height: auto;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 52px 0 34px;
+      }
+
+      .hero-copy {
+        text-align: center;
+      }
+
+      .eyebrow {
+        justify-content: center;
+      }
+
+      h1 {
+        font-size: clamp(36px, 9vw, 52px);
+      }
+
+      .intro {
+        margin: 22px auto 0;
+        font-size: 18px;
+      }
+
+      .hero-note {
+        justify-content: center;
+        margin-top: 23px;
+      }
+
+      .art {
+        min-height: 300px;
+      }
+
+      .art::before {
+        width: 270px;
+        height: 270px;
+      }
+
+      .art::after {
+        width: 218px;
+        height: 218px;
+      }
+
+      .postcard {
+        width: min(68%, 235px);
+      }
+
+      .section {
+        padding: 26px 0 55px;
+      }
+
+      .interest-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .interest-card {
+        display: grid;
+        min-height: 0;
+        grid-template-columns: 46px 1fr;
+        column-gap: 14px;
+        align-items: center;
+        padding: 19px 17px;
+      }
+
+      .interest-icon {
+        grid-row: span 2;
+      }
+
+      .interest-card h3 {
+        margin: 0 0 2px;
+      }
+
+      .interest-card p {
+        grid-column: 2;
+        font-size: 18px;
+      }
+
+      .section-hint {
+        display: none;
+      }
+
+      .closing {
+        margin-bottom: 46px;
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .page {
+        width: calc(100% - 28px);
+      }
+
+      .nav {
+        gap: 12px;
+      }
+
+      .brand {
+        font-size: 13px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
 <body>
-  <main>
-    <header>
-      <p class="label">我的个人主页</p>
-      <h1>你好，我是小满</h1>
-      <p>我喜欢用照片、纸笔和音乐记录日常。</p>
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="小满主页">
+        <span class="brand-mark" aria-hidden="true">满</span>
+        <span>小满的日常</span>
+      </a>
+      <nav class="nav" aria-label="页面导航">
+        <a href="#about">关于</a>
+        <a href="#interests">兴趣</a>
+      </nav>
     </header>
-    <section aria-labelledby="interests">
-      <h2 id="interests">我喜欢做的事</h2>
-      <div class="cards">
-        <article><h3>骑行</h3><p>周末沿着河边慢慢骑，找一条没走过的小路。</p></article>
-        <article><h3>拍照</h3><p>收集傍晚的天空，也拍路边的小树和猫。</p></article>
-        <article><h3>做手账</h3><p>给每周留一页，贴票根，写下想记住的片段。</p></article>
+
+    <main>
+      <section class="hero" id="about" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow">A LITTLE EVERYDAY</p>
+          <h1 id="page-title">你好，我是小满</h1>
+          <p class="intro">我喜欢用照片、纸笔和音乐记录日常</p>
+          <div class="hero-note">
+            <span aria-hidden="true">✳</span>
+            <span>把平常的日子，过得有一点喜欢</span>
+          </div>
+        </div>
+
+        <div class="art" aria-hidden="true">
+          <span class="sun"></span>
+          <span class="leaf one"></span>
+          <span class="leaf two"></span>
+          <div class="postcard">
+            <svg viewBox="0 0 280 310" role="img" aria-label="">
+              <rect width="280" height="310" fill="#dce8d4"/>
+              <circle cx="206" cy="73" r="32" fill="#f3edc9"/>
+              <path d="M0 211 Q67 161 132 204 T280 187 V310 H0Z" fill="#a8bf9f"/>
+              <path d="M0 239 Q70 198 139 231 T280 215 V310 H0Z" fill="#789578"/>
+              <path d="M37 310 Q95 247 148 231 Q190 219 234 238" fill="none" stroke="#f5f3df" stroke-width="5" stroke-linecap="round"/>
+              <path d="M51 310 Q106 258 151 245" fill="none" stroke="#d4dfc8" stroke-width="1.5" stroke-dasharray="5 7"/>
+              <g fill="#4e7356">
+                <path d="M39 221 Q28 181 43 144 Q56 180 47 220Z"/>
+                <path d="M44 195 Q11 177 15 156 Q39 164 48 190Z"/>
+                <path d="M45 181 Q69 148 86 158 Q72 180 48 191Z"/>
+                <path d="M238 224 Q224 179 242 132 Q257 176 247 221Z"/>
+                <path d="M242 191 Q211 172 214 151 Q237 159 246 187Z"/>
+                <path d="M243 174 Q266 143 282 154 Q268 177 246 184Z"/>
+              </g>
+              <path d="M0 129 Q47 117 85 130 M0 141 Q42 130 72 140" fill="none" stroke="#f5f7ef" stroke-width="2" opacity=".7"/>
+              <path d="M165 105 Q178 98 190 104 M168 114 Q180 108 191 113" fill="none" stroke="#91aa88" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span class="postcard-label">SLOW DAYS</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="interests" aria-labelledby="interests-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">LITTLE THINGS I LOVE</p>
+            <h2 id="interests-title">日常兴趣</h2>
+          </div>
+          <p class="section-hint">一些让我觉得生活很好的小事</p>
+        </div>
+
+        <div class="interest-grid">
+          <article class="interest-card">
+            <span class="interest-icon" aria-hidden="true">⌁</span>
+            <h3>骑行</h3>
+            <p>沿着自己的节奏，慢慢向前。</p>
+          </article>
+          <article class="interest-card">
+            <span class="interest-icon" aria-hidden="true">▧</span>
+            <h3>拍照</h3>
+            <p>留住那些想多看一眼的瞬间。</p>
+          </article>
+          <article class="interest-card">
+            <span class="interest-icon" aria-hidden="true">✎</span>
+            <h3>做手账</h3>
+            <p>用纸笔，收好生活里的小片段。</p>
+          </article>
+        </div>
+      </section>
+
+      <div class="closing">
+        <span class="closing-mark" aria-hidden="true">✳</span>
+        <span>用照片、纸笔和音乐，认真记录日常。</span>
+        <span class="closing-mark" aria-hidden="true">✳</span>
       </div>
-    </section>
-    <footer>个人主页课堂示例</footer>
-  </main>
+    </main>
+
+    <footer>小满 · 日常记录</footer>
+  </div>
 </body>
 </html>
